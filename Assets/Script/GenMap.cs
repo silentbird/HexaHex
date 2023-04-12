@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using pure.ui.image;
+using Script;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,14 +10,7 @@ public class GenMap : MonoBehaviour
     public int mapSize = 2;
     public Vector2 offset = new Vector2(0, 0);
 
-    struct CellData
-    {
-        public int x;
-        public int y;
-        public GameObject gameObj;
-    }
-
-    private Dictionary<(int, int), CellData> hexMap;
+    private Dictionary<(int, int), HexCell> hexMap;
 
 
     private void Awake()
@@ -34,7 +28,7 @@ public class GenMap : MonoBehaviour
                 DestroyImmediate(child);
         }
 
-        hexMap = new Dictionary<(int, int), CellData>();
+        hexMap = new Dictionary<(int, int), HexCell>();
         int totalRows = mapSize * 2 - 1;
         for (int row = 0; row < totalRows; row++)
         {
@@ -51,9 +45,22 @@ public class GenMap : MonoBehaviour
 
                 var txt = obj.GetComponentInChildren<Text>();
                 txt.text = row + "_" + col;
-                var cellData = new CellData {x = row, y = col, gameObj = obj};
-                hexMap.Add((row, col), cellData);
+                var hexCell = obj.GetComponentInChildren<HexCell>();
+                hexCell.x = row;
+                hexCell.y = col;
+                hexMap.Add((row, col), hexCell);
             }
+        }
+        foreach (var cell in hexMap)
+        {
+            var row = cell.Key.Item1;
+            var col = cell.Key.Item2;
+            cell.Value.nearBy[CellDir.LeftTop] = hexMap.ContainsKey((row - 1, col - 1)) ? hexMap[(row - 1, col - 1)] : null;
+            cell.Value.nearBy[CellDir.RightTop] = hexMap.ContainsKey((row - 1, col)) ? hexMap[(row - 1, col)] : null;
+            cell.Value.nearBy[CellDir.Right] = hexMap.ContainsKey((row, col + 1)) ? hexMap[(row, col + 1)] : null;
+            cell.Value.nearBy[CellDir.RightBottom] = hexMap.ContainsKey((row + 1, col)) ? hexMap[(row + 1, col)] : null;
+            cell.Value.nearBy[CellDir.LeftBottom] = hexMap.ContainsKey((row + 1, col - 1)) ? hexMap[(row + 1, col - 1)] : null;
+            cell.Value.nearBy[CellDir.Left] = hexMap.ContainsKey((row, col - 1)) ? hexMap[(row, col - 1)] : null;
         }
     }
 }
