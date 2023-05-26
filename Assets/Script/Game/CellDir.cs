@@ -1,4 +1,4 @@
-﻿namespace Script
+﻿namespace Game
 {
     public enum CellDir
     {
