@@ -11,7 +11,7 @@ namespace Game
 
         private void Awake()
         {
-            GetComponent<RectTransform>().sizeDelta = new Vector2(GameCenter.size, GameCenter.size);
+            GetComponent<RectTransform>().sizeDelta = new Vector2(GameCenter.Size, GameCenter.Size);
         }
 
         void IPointerDownHandler.OnPointerDown(PointerEventData evt)

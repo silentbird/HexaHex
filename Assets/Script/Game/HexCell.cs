@@ -3,18 +3,40 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+
 namespace Game
 {
     public class HexCell : MonoBehaviour, IPointerClickHandler
     {
-        public int x;
-        public int y;
-        public GameObject gameObj;
+        private int _row = -1;
+
+        public int row
+        {
+            set
+            {
+                _row = value;
+                GetComponentInChildren<Text>().text = $"{value} {col}";
+            }
+            get => _row;
+        }
+
+        private int _col = -1;
+
+        public int col
+        {
+            set
+            {
+                _col = value;
+                GetComponentInChildren<Text>().text = $"{row} {value}";
+            }
+            get => _col;
+        }
+
         public readonly Dictionary<CellDir, HexCell> NearBy = new Dictionary<CellDir, HexCell>();
 
         private bool _hasCell;
 
-        private bool hasCell
+        public bool hasCell
         {
             get => _hasCell;
             set
@@ -22,7 +44,8 @@ namespace Game
                 _hasCell = value;
                 if (value)
                 {
-                    GetComponent<Graphic>().color = Color.red;
+                    var graphic = GetComponent<Graphic>();
+                    graphic.color = Color.red;
                 }
                 else
                 {
@@ -33,46 +56,16 @@ namespace Game
 
         void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
         {
-            Debug.Log($"Click {x} {y}");
-            hasCell = !hasCell;
-        }
-
-        private static CellDir GetOppositeDirection(CellDir cellDir)
-        {
-            int directionValue = (int)cellDir;
-            int oppositeValue = directionValue ^ 3;
-            return (CellDir)oppositeValue;
-        }
-
-        public static bool CheckHex(HexCell hexCell, CellDir dir)
-        {
-            if (!hexCell.hasCell)
-                return false;
-            if (hexCell.NearBy.TryGetValue(dir, out HexCell nextCell))
-                return CheckHex(nextCell, dir);
-            var oppDir = GetOppositeDirection(dir);
-            if (hexCell.NearBy.TryGetValue(oppDir, out HexCell oppCell))
-                return CheckHex(oppCell, oppDir);
-            return false;
-        }
-
-
-        public static bool CheckHexCellLine(HexCell hexCell)
-        {
-            CellDir[] dirs = { CellDir.LeftTop, CellDir.RightTop, CellDir.Right };
-            foreach (var dir in dirs)
+            var str = "current:" + this + this.hasCell + "\n";
+            foreach (var hex in NearBy)
             {
-                hexCell.NearBy.TryGetValue(dir, out var cell);
-                if (!cell)
-                {
-                }
-                else if (cell && !cell.hasCell)
-                {
-                    return false;
-                }
+                str += $"{hex.Key} " + (hex.Value != null ? $"{hex.Value.row} {hex.Value.col} {hex.Value.hasCell}" : "null") + "\n";
             }
 
-            return true;
+            Debug.Log(str);
+            hasCell = !hasCell;
+
+            HexManager.CheckHexCellLine(this);
         }
     }
 }

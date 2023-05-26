@@ -2,6 +2,6 @@ namespace Game
 {
     public static class GameCenter
     {
-        public static float size;
+        public static float Size;
     }
 }
