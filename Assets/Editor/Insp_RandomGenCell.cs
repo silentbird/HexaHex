@@ -41,7 +41,7 @@ public class Insp_RandomGenCell : Editor {
 		}
 
 		for (int i = 0; i < _cellStylesProp.arraySize; i++) {
-			var ele = _cellStylesProp.GetArrayElementAtIndex(i);
+			SerializedProperty ele = _cellStylesProp.GetArrayElementAtIndex(i);
 			EditorGUILayout.PropertyField(ele, true);
 			serializedObject.ApplyModifiedProperties();
 			EditorGUILayout.LabelField("Custom Gen Cell");

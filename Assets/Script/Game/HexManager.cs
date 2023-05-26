@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Game {
 	public static class HexManager {
 		private static CellDir GetOppositeDirection(CellDir cellDir) {
-			var memberInfo = typeof(CellDir).GetMember(cellDir.ToString())[0];
-			var attributes = memberInfo.GetCustomAttributes(typeof(OppositeDirectionAttribute), false);
+			MemberInfo memberInfo = typeof(CellDir).GetMember(cellDir.ToString())[0];
+			object[] attributes = memberInfo.GetCustomAttributes(typeof(OppositeDirectionAttribute), false);
 			if (attributes.Length == 1 && attributes[0] is OppositeDirectionAttribute oppositeAttribute) {
 				return oppositeAttribute.oppositeDirection;
 			}
@@ -28,14 +29,14 @@ namespace Game {
 		public static void CheckHexCellLine(HexCell hexCell) {
 			CellDir[] dirs = { CellDir.LeftTop, CellDir.RightTop, CellDir.Right };
 			List<HexCell> line = new List<HexCell>();
-			foreach (var dir in dirs) {
+			foreach (CellDir dir in dirs) {
 				if (!CheckHex(hexCell, dir, ref line)) {
 					line.Clear();
 					line.Add(hexCell);
 					continue;
 				}
 
-				var oppDir = GetOppositeDirection(dir);
+				CellDir oppDir = GetOppositeDirection(dir);
 				if (hexCell.NearBy.TryGetValue(oppDir, out HexCell oppCell) && !CheckHex(oppCell, oppDir, ref line)) {
 					line.Clear();
 					line.Add(hexCell);
@@ -47,7 +48,7 @@ namespace Game {
 				return;
 			}
 
-			foreach (var hex in line) {
+			foreach (HexCell hex in line) {
 				hex.hasCell = false;
 			}
 		}

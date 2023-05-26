@@ -159,8 +159,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -201}
-  m_SizeDelta: {x: 20, y: 20}
+  m_AnchoredPosition: {x: -206.5, y: -216.5}
+  m_SizeDelta: {x: 155.4, y: 155.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &332144922
 MonoBehaviour:
@@ -410,10 +410,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a1112bb58b76f94db5a3c1478eb2685, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellPrefab: {fileID: 8333878148228225670, guid: 943d378b017b7844aafaeb89133e273d,
-    type: 3}
+  prefab: {fileID: 8333878148228225670, guid: 943d378b017b7844aafaeb89133e273d, type: 3}
   mapSize: 6
-  offset: {x: -3, y: -10}
+  offset: {x: 0, y: 0}
 --- !u!114 &1397935755
 MonoBehaviour:
   m_ObjectHideFlags: 0

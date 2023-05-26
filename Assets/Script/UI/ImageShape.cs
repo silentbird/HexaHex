@@ -1,10 +1,8 @@
-namespace pure.ui.imageFiller
-{
-    public enum ImageShape
-    {
-        Rect,
-        Round,
-        RoundRect,
-        Surround,
-    }
+namespace pure.ui.imageFiller {
+	public enum ImageShape {
+		Rect,
+		Round,
+		RoundRect,
+		Surround,
+	}
 }

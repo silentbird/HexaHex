@@ -10,11 +10,11 @@ public class RandomGenCell : MonoBehaviour {
 		public Vector2 center;
 
 		CellStyle(int size) {
-			color  = Color.red;
+			color = Color.red;
 			center = new Vector2(0, 0);
 		}
 	}
 
 	public CellStyle[] cellStyles;
-	public bool[,,]    grid;
+	public bool[,,] grid;
 }
