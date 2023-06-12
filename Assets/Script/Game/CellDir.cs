@@ -18,16 +18,16 @@ namespace Game {
 		LeftBottom,
 
 		[OppositeDirection(Right)]
-		Left,
+		Left
 	}
 
 
 	[AttributeUsage(AttributeTargets.Field)]
 	public class OppositeDirectionAttribute : Attribute {
-		public CellDir oppositeDirection { get; }
-
 		public OppositeDirectionAttribute(CellDir oppositeDirection) {
 			this.oppositeDirection = oppositeDirection;
 		}
+
+		public CellDir oppositeDirection { get; }
 	}
 }

@@ -158,7 +158,7 @@ MonoBehaviour:
   _fillCenter: 0
   _preserveAspect: 1
   _clockWise: 1
-  _thickness: 30
+  _thickness: 50
   _fillAmount: 1
   _numEdge: 6
   _startAngle: 90
@@ -207,6 +207,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c327baa2c97fb1b469a23c76e3088333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  x: 0
-  y: 0
-  gameObj: {fileID: 0}

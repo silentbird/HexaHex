@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 namespace Game {
 	public class GameManager : MonoBehaviour {
 		public GameObject prefab;
 
 		public int mapSize = 2;
-		public Vector2 offset = new Vector2(0, 0);
+		public Vector2 offset = new(0, 0);
 
 		private Dictionary<(int, int), HexCell> _hexMap;
 
@@ -18,42 +17,41 @@ namespace Game {
 		}
 
 		private void GenerateHexMap() {
-			foreach (Transform child in transform) {
+			foreach (Transform child in transform)
 				if (Application.isPlaying)
 					Destroy(child);
 				else
 					DestroyImmediate(child);
-			}
 
 			_hexMap = new Dictionary<(int, int), HexCell>();
-			int totalRows = mapSize * 2 - 1;
+			var totalRows = mapSize * 2 - 1;
 
-			GameCenter.Size = (float)Math.Round(Screen.width / totalRows * 0.8f, 1);
+			GameCenter.Size = (float)Math.Round(Screen.width / totalRows * 0.9f, 1);
 
-			for (int row = 0; row < totalRows; row++) {
-				int totalCols = totalRows - Mathf.Abs(row + 1 - mapSize);
-				for (int col = 0; col < totalCols; col++) {
-					GameObject obj = Instantiate(prefab, transform, false);
+			for (var row = 0; row < totalRows; row++) {
+				var totalCols = totalRows - Mathf.Abs(row + 1 - mapSize);
+				for (var col = 0; col < totalCols; col++) {
+					var obj = Instantiate(prefab, transform, false);
 					obj.transform.localScale = new Vector3(1, 1, 1);
 					obj.transform.name = "cell" + row + "_" + col;
 
 					obj.GetComponent<HexCell>().Size = GameCenter.Size;
-					Rect rect = obj.GetComponent<RectTransform>().rect;
-					float mid = (totalCols - 1) / 2f;
-					obj.transform.localPosition = new Vector3((col - mid) * (rect.width + offset.x), -(row - mid) * (rect.height + offset.y), 0);
+					var rect = obj.GetComponent<RectTransform>().rect;
+					var mid = (totalCols - 1) / 2f;
+					obj.transform.localPosition = new Vector3((col - mid) * (rect.width + offset.x), -(row - mapSize + 1f) * (rect.height + offset.y), 0);
 
-					Text txt = obj.GetComponentInChildren<Text>();
+					var txt = obj.GetComponentInChildren<Text>();
 					txt.text = row + "_" + col;
-					HexCell hexCell = obj.GetComponentInChildren<HexCell>();
+					var hexCell = obj.GetComponentInChildren<HexCell>();
 					hexCell.row = row;
 					hexCell.col = col;
 					_hexMap.Add((row, col), hexCell);
 				}
 			}
 
-			foreach (KeyValuePair<(int, int), HexCell> cell in _hexMap) {
-				int row = cell.Key.Item1;
-				int col = cell.Key.Item2;
+			foreach (var cell in _hexMap) {
+				var row = cell.Key.Item1;
+				var col = cell.Key.Item2;
 				if (_hexMap.ContainsKey((row, col + 1))) cell.Value.NearBy[CellDir.Right] = _hexMap[(row, col + 1)];
 				if (_hexMap.ContainsKey((row, col - 1))) cell.Value.NearBy[CellDir.Left] = _hexMap[(row, col - 1)];
 				if (row < mapSize - 1) {

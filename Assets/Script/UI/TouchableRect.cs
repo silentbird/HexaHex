@@ -1,19 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace pure.ui.element
-{
-    [AddComponentMenu("UI/TouchableRect", 34), RequireComponent(typeof(RectTransform))]
-    public class TouchableRect : Graphic, ICanvasRaycastFilter
-    {
-        protected virtual void OnPopulateMesh(VertexHelper vh)
-        {
-        }
+namespace pure.ui.element {
+	[AddComponentMenu("UI/TouchableRect", 34), RequireComponent(typeof(RectTransform))]
+	public class TouchableRect : Graphic, ICanvasRaycastFilter {
+		public bool IsRaycastLocationValid(Vector2 sp, Camera eventCamera) {
+			return true;
+		}
 
-        protected virtual void UpdateGeometry()
-        {
-        }
+		protected virtual void OnPopulateMesh(VertexHelper vh) {
+		}
 
-        public bool IsRaycastLocationValid(Vector2 sp, Camera eventCamera) => true;
-    }
+		protected virtual void UpdateGeometry() {
+		}
+	}
 }

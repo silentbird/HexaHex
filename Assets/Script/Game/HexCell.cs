@@ -3,10 +3,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-
 namespace Game {
 	public class HexCell : MonoBehaviour, IPointerClickHandler {
+		public readonly Dictionary<CellDir, HexCell> NearBy = new();
+
+		private int _col = -1;
+
+		private bool _hasCell;
 		private int _row = -1;
+		private float _size;
 
 		public int row {
 			set {
@@ -16,8 +21,6 @@ namespace Game {
 			get => _row;
 		}
 
-		private int _col = -1;
-
 		public int col {
 			set {
 				_col = value;
@@ -25,11 +28,6 @@ namespace Game {
 			}
 			get => _col;
 		}
-
-		public readonly Dictionary<CellDir, HexCell> NearBy = new Dictionary<CellDir, HexCell>();
-
-		private bool _hasCell;
-		private float _size;
 
 		public bool hasCell {
 			get => _hasCell;
@@ -50,35 +48,33 @@ namespace Game {
 			set {
 				_size = value;
 				setColliderPoints(_size);
-				this.GetComponent<RectTransform>().sizeDelta = new Vector2(_size, _size);
+				GetComponent<RectTransform>().sizeDelta = new Vector2(_size, _size);
 			}
-		}
-
-		private void setColliderPoints(float size) {
-			var _polygonCollider2D = GetComponent<PolygonCollider2D>();
-			var radius = size / 2;
-			Vector2[] vertices = new Vector2[] {
-				new Vector2(0f, radius),
-				new Vector2(radius * Mathf.Sqrt(3) / 2, radius / 2),
-				new Vector2(radius * Mathf.Sqrt(3) / 2, -radius / 2),
-				new Vector2(0f, -radius),
-				new Vector2(-radius * Mathf.Sqrt(3) / 2, -radius / 2),
-				new Vector2(-radius * Mathf.Sqrt(3) / 2, radius / 2)
-			};
-			_polygonCollider2D.points = vertices;
 		}
 
 
 		void IPointerClickHandler.OnPointerClick(PointerEventData eventData) {
-			var str = "current:" + this + this.hasCell + "\n";
-			foreach (var hex in NearBy) {
-				str += $"{hex.Key} " + (hex.Value != null ? $"{hex.Value.row} {hex.Value.col} {hex.Value.hasCell}" : "null") + "\n";
-			}
+			var str = "current:" + this + hasCell + "\n";
+			foreach (var hex in NearBy) str += $"{hex.Key} " + (hex.Value != null ? $"{hex.Value.row} {hex.Value.col} {hex.Value.hasCell}" : "null") + "\n";
 
 			Debug.Log(str);
 			hasCell = !hasCell;
 
 			HexManager.CheckHexCellLine(this);
+		}
+
+		private void setColliderPoints(float size) {
+			var _polygonCollider2D = GetComponent<PolygonCollider2D>();
+			var radius = size / 2;
+			Vector2[] vertices = {
+				new(0f, radius),
+				new(radius * Mathf.Sqrt(3) / 2, radius / 2),
+				new(radius * Mathf.Sqrt(3) / 2, -radius / 2),
+				new(0f, -radius),
+				new(-radius * Mathf.Sqrt(3) / 2, -radius / 2),
+				new(-radius * Mathf.Sqrt(3) / 2, radius / 2)
+			};
+			_polygonCollider2D.points = vertices;
 		}
 	}
 }

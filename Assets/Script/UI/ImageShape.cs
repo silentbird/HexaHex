@@ -3,6 +3,6 @@ namespace pure.ui.imageFiller {
 		Rect,
 		Round,
 		RoundRect,
-		Surround,
+		Surround
 	}
 }
